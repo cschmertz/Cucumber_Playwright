@@ -1,0 +1,25 @@
+package com.runners;
+
+
+
+import io.cucumber.junit.CucumberOptions;
+import io.cucumber.junit.platform.engine.Cucumber;
+import org.junit.runner.RunWith;
+
+import static io.cucumber.junit.platform.engine.Constants.*;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        features = {"src/test/resources/functionalTests"},
+        glue= {"stepDefinitions"},
+        plugin = { "pretty", "json:target/cucumber-reports/Cucumber.json",
+                "junit:target/cucumber-reports/Cucumber.xml",
+                "html:target/cucumber-report.html",
+                "com.aventstack.extentreports.cucumber.adapter.ExtentCucumberAdapter:",
+                "listeners.TestFailureListener"},
+        monochrome = true,
+        tags = "@Google",
+        dryRun = false
+)
+public class TestRunner {
+}
