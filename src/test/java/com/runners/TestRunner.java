@@ -1,12 +1,10 @@
 package com.runners;
 
-
+import io.cucumber.junit.Cucumber;
 
 import io.cucumber.junit.CucumberOptions;
-import io.cucumber.junit.platform.engine.Cucumber;
 import org.junit.runner.RunWith;
 
-import static io.cucumber.junit.platform.engine.Constants.*;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
