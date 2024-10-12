@@ -4,7 +4,6 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestExecutionExceptionHandler;
 import org.junit.jupiter.api.extension.TestWatcher;
 
-import java.util.Optional;
 
 public class RetryRule implements TestExecutionExceptionHandler, TestWatcher {
 
@@ -33,8 +32,7 @@ public class RetryRule implements TestExecutionExceptionHandler, TestWatcher {
         System.out.println("Test failed after retries: " + context.getDisplayName());
     }
 
-    @Override
-    public Optional<String> testSuccessful(ExtensionContext context) {
-        return Optional.of("Test passed on retry: " + context.getDisplayName());
-    }
+    // @Override
+    // public void testSuccessful(ExtensionContext context) {
+    // }
 }
