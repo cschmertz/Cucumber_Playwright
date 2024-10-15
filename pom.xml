@@ -22,12 +22,14 @@
             <version>7.14.0</version> <!-- Latest version -->
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-junit-platform-engine</artifactId>
             <version>7.14.0</version> <!-- Latest version for JUnit 5 -->
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-picocontainer</artifactId>
@@ -63,6 +65,7 @@
             <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -98,7 +101,6 @@
             <version>1.10.0</version>
             <scope>test</scope>
         </dependency>
-
 
         <!-- Google Java Format -->
         <dependency>

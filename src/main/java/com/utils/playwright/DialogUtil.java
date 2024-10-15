@@ -1,7 +1,6 @@
 package com.utils.playwright;
 
 import com.microsoft.playwright.Page;
-
 import java.util.function.Consumer;
 
 public class DialogUtil extends BasePlaywrightUtil {
