@@ -1,6 +1,5 @@
 package com.context;
 
-
 import com.managers.DriverManager;
 
 public class TestContext {

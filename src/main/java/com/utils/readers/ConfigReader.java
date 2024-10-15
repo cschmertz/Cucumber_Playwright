@@ -1,4 +1,4 @@
-package com.utils;
+package com.utils.readers;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,6 +15,14 @@ public class ConfigReader {
         } catch (IOException e) {
             throw new RuntimeException("Configuration.properties not found at " + propertyFilePath, e);
         }
+    }
+
+    public String getProperty(String key) {
+        String value = properties.getProperty(key);
+        if (value == null) {
+            throw new RuntimeException("Property " + key + " not specified in the configuration.properties file");
+        }
+        return value;
     }
 
     public String getBaseUrl() {

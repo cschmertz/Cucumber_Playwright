@@ -1,11 +1,12 @@
 package com.runners;
 
-import org.junit.platform.suite.api.IncludeEngines;
-import org.junit.platform.suite.api.SelectClasspathResource;
-import org.junit.platform.suite.api.Suite;
+import io.cucumber.junit.platform.engine.Cucumber;
 
-@Suite
-@IncludeEngines("cucumber")
-@SelectClasspathResource("features")
+@Cucumber
 public class FailedTestRunner {
+
+    static {
+        System.setProperty("cucumber.features", "@target/failed_scenarios.txt");
+    }
 }
+

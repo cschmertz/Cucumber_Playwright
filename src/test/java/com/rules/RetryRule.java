@@ -32,7 +32,4 @@ public class RetryRule implements TestExecutionExceptionHandler, TestWatcher {
         System.out.println("Test failed after retries: " + context.getDisplayName());
     }
 
-    // @Override
-    // public void testSuccessful(ExtensionContext context) {
-    // }
 }

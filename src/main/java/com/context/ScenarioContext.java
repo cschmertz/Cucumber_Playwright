@@ -3,6 +3,7 @@ package com.context;
 import com.microsoft.playwright.Page;
 
 public class ScenarioContext {
+
     private Page page;
 
     public Page getPage() {
@@ -13,3 +14,5 @@ public class ScenarioContext {
         this.page = page;
     }
 }
+
+
