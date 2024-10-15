@@ -1,4 +1,4 @@
-package com.listeners;
+package com.utils.java;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.ConfigurationLoader;
