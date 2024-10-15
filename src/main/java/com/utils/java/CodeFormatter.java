@@ -1,4 +1,4 @@
-package com.utils.Java;
+package com.utils.java;
 
 import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
