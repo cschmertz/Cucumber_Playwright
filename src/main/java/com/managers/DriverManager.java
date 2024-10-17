@@ -23,7 +23,7 @@ public class DriverManager {
         Playwright pw = Playwright.create();
         playwright.set(pw);
 
-        String browserType = configReader.getProperty("browser.type").toLowerCase();
+        String browserType = configReader.getProperty("browser").toLowerCase();
         boolean headless = Boolean.parseBoolean(configReader.getProperty("browser.headless"));
 
         switch (browserType) {

@@ -1,5 +1,6 @@
 package com.stepDefinitions;
 
+import com.context.TestContext;
 import com.pages.GoogleHomePage;
 import com.utils.readers.ConfigReader;
 import io.cucumber.java.en.*;
@@ -11,8 +12,8 @@ public class GoogleSearchSteps {
     private GoogleHomePage googleHomePage;
     private ConfigReader configReader;
 
-    public GoogleSearchSteps(Page page) {
-        this.page = page;
+    public GoogleSearchSteps(TestContext testContext) {
+        this.page = testContext.getDriverManager().getPage();
         this.googleHomePage = new GoogleHomePage(page);
         this.configReader = new ConfigReader();
     }
@@ -22,6 +23,7 @@ public class GoogleSearchSteps {
         String baseUrl = configReader.getBaseUrl();
         page.navigate(baseUrl);
     }
+
     @When("I enter {string} into the search box")
     public void iEnterIntoSearchBox(String searchQuery) {
         googleHomePage.enterSearchQuery(searchQuery);

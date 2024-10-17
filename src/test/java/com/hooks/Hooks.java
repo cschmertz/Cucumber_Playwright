@@ -1,7 +1,6 @@
 package com.hooks;
 
-import com.context.ScenarioContext;
-import com.managers.DriverManager;
+import com.context.TestContext;
 import com.utils.playwright.TraceUtils;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -11,22 +10,18 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 public class Hooks {
-    private DriverManager driverManager;
-    private ScenarioContext scenarioContext;
+    private TestContext testContext;
     private static final String TRACE_DIR = "traces";
 
-    public Hooks(ScenarioContext context) {
-        this.scenarioContext = context;
+    public Hooks(TestContext testContext) {
+        this.testContext = testContext;
     }
 
     @Before
     public void setUp(Scenario scenario) {
-        driverManager = new DriverManager();
-        scenarioContext.setPage(driverManager.getPage());
-
         // Start tracing
         String traceName = scenario.getName().replaceAll("\\s+", "_").toLowerCase();
-        driverManager.startTracing(traceName);
+        testContext.getDriverManager().startTracing(traceName);
     }
 
     @After
@@ -38,13 +33,13 @@ public class Hooks {
 
             // Stop tracing and save trace file
             String traceName = scenario.getName().replaceAll("\\s+", "_").toLowerCase();
-            Path tracePath = driverManager.stopTracing(traceName);
+            Path tracePath = testContext.getDriverManager().stopTracing(traceName);
 
             // Attach trace file to scenario
             scenario.attach(tracePath.toAbsolutePath().toString(), "text/plain", "Trace File Path");
         } finally {
-            if (driverManager != null) {
-                driverManager.closeBrowser();
+            if (testContext.getDriverManager() != null) {
+                testContext.getDriverManager().closeBrowser();
             }
         }
 

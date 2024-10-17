@@ -2,6 +2,7 @@ package com.pages;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class GoogleHomePage {
     private final Page page;
@@ -19,13 +20,14 @@ public class GoogleHomePage {
 
     private void initializeLocators() {
         logoLocator = page.locator("img[alt='Google']");
-        searchBoxLocator = page.locator("input[name='q']");
+        searchBoxLocator = page.locator("input[name='q'][type='text']");
         searchButtonLocator = page.locator("input[name='btnK']");
         imFeelingLuckyButtonLocator = page.locator("input[name='btnI']");
         searchResultsLocator = page.locator("#search");
     }
 
     public void enterSearchQuery(String query) {
+        searchBoxLocator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE));
         searchBoxLocator.fill(query);
     }
 
