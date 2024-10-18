@@ -20,7 +20,7 @@ public class GoogleHomePage {
 
     private void initializeLocators() {
         logoLocator = page.locator("img[alt='Google']");
-        searchBoxLocator = page.locator("input[name='q'][type='text']");
+        searchBoxLocator = page.locator("textarea[name='q']");
         searchButtonLocator = page.locator("input[name='btnK']");
         imFeelingLuckyButtonLocator = page.locator("input[name='btnI']");
         searchResultsLocator = page.locator("#search");
