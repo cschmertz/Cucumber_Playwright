@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.time.LocalDateTime;
 
 public class Hooks {
-    private TestContext testContext;
+    private final TestContext testContext;
     private static final String TRACE_DIR = "traces";
 
     public Hooks(TestContext testContext) {
@@ -19,7 +19,7 @@ public class Hooks {
 
     @Before
     public void setUp(Scenario scenario) {
-        // Start tracing
+        testContext.getDriverManager().initializeDriver(); // Initialize driver for each scenario
         String traceName = scenario.getName().replaceAll("\\s+", "_").toLowerCase();
         testContext.getDriverManager().startTracing(traceName);
     }
@@ -29,21 +29,18 @@ public class Hooks {
         try {
             if (scenario.isFailed()) {
                 logFailureDetails(scenario);
+                byte[] screenshot = testContext.getDriverManager().takeScreenshot();
+                scenario.attach(screenshot, "image/png", "Screenshot");
             }
 
-            // Stop tracing and save trace file
             String traceName = scenario.getName().replaceAll("\\s+", "_").toLowerCase();
             Path tracePath = testContext.getDriverManager().stopTracing(traceName);
 
-            // Attach trace file to scenario
             scenario.attach(tracePath.toAbsolutePath().toString(), "text/plain", "Trace File Path");
         } finally {
-            if (testContext.getDriverManager() != null) {
-                testContext.getDriverManager().closeBrowser();
-            }
+            testContext.getDriverManager().closeBrowser();
         }
 
-        // Clean up old traces
         TraceUtils.deleteOldTraces(TRACE_DIR);
     }
 

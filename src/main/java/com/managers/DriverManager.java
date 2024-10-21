@@ -7,40 +7,40 @@ import com.utils.playwright.PlaywrightFacade;
 import java.nio.file.Path;
 
 public class DriverManager {
-    private static ThreadLocal<Playwright> playwright = new ThreadLocal<>();
-    private static ThreadLocal<Browser> browser = new ThreadLocal<>();
-    private static ThreadLocal<BrowserContext> context = new ThreadLocal<>();
-    private static ThreadLocal<Page> page = new ThreadLocal<>();
-    private static ThreadLocal<PlaywrightFacade> playwrightFacade = new ThreadLocal<>();
-    private ConfigReader configReader;
+    private static final ThreadLocal<Playwright> playwright = ThreadLocal.withInitial(Playwright::create);
+    private static final ThreadLocal<Browser> browser = new ThreadLocal<>();
+    private static final ThreadLocal<BrowserContext> context = new ThreadLocal<>();
+    private static final ThreadLocal<Page> page = new ThreadLocal<>();
+    private static final ThreadLocal<PlaywrightFacade> playwrightFacade = new ThreadLocal<>();
+    private final ConfigReader configReader;
 
     public DriverManager() {
         configReader = new ConfigReader();
-        initializeDriver();
     }
 
-    private void initializeDriver() {
-        Playwright pw = Playwright.create();
-        playwright.set(pw);
+    public void initializeDriver() {
+        Playwright pw = playwright.get();
 
-        String browserType = configReader.getProperty("browser").toLowerCase();
-        boolean headless = Boolean.parseBoolean(configReader.getProperty("browser.headless"));
+        String browserType = configReader.getBrowser().toLowerCase();
+        boolean headless = configReader.isHeadless();
 
+        Browser b;
         switch (browserType) {
             case "chromium":
-                browser.set(pw.chromium().launch(new BrowserType.LaunchOptions().setHeadless(headless)));
+                b = pw.chromium().launch(new BrowserType.LaunchOptions().setHeadless(headless));
                 break;
             case "firefox":
-                browser.set(pw.firefox().launch(new BrowserType.LaunchOptions().setHeadless(headless)));
+                b = pw.firefox().launch(new BrowserType.LaunchOptions().setHeadless(headless));
                 break;
             case "webkit":
-                browser.set(pw.webkit().launch(new BrowserType.LaunchOptions().setHeadless(headless)));
+                b = pw.webkit().launch(new BrowserType.LaunchOptions().setHeadless(headless));
                 break;
             default:
                 throw new IllegalArgumentException("Browser not supported: " + browserType);
         }
 
-        context.set(browser.get().newContext());
+        browser.set(b);
+        context.set(b.newContext());
         page.set(context.get().newPage());
         playwrightFacade.set(new PlaywrightFacade(page.get(), context.get()));
     }
@@ -54,8 +54,9 @@ public class DriverManager {
     }
 
     public void startTracing(String traceName) {
-        if (context.get() != null) {
-            context.get().tracing().start(new Tracing.StartOptions()
+        BrowserContext ctx = context.get();
+        if (ctx != null) {
+            ctx.tracing().start(new Tracing.StartOptions()
                     .setScreenshots(true)
                     .setSnapshots(true)
                     .setSources(true));
@@ -63,10 +64,10 @@ public class DriverManager {
     }
 
     public Path stopTracing(String traceName) {
-        if (context.get() != null) {
+        BrowserContext ctx = context.get();
+        if (ctx != null) {
             Path tracePath = TraceUtils.getTraceFilePath(traceName);
-            context.get().tracing().stop(new Tracing.StopOptions()
-                    .setPath(tracePath));
+            ctx.tracing().stop(new Tracing.StopOptions().setPath(tracePath));
             return tracePath;
         }
         return null;
@@ -84,10 +85,6 @@ public class DriverManager {
         if (browser.get() != null) {
             browser.get().close();
             browser.remove();
-        }
-        if (playwright.get() != null) {
-            playwright.get().close();
-            playwright.remove();
         }
         playwrightFacade.remove();
     }
