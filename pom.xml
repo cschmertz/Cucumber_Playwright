@@ -133,9 +133,8 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.1.2</version>
                 <configuration>
-                    <parallel>methods</parallel>
+                    <parallel>classesAndMethods</parallel>
                     <threadCount>4</threadCount>
-                    <useUnlimitedThreads>false</useUnlimitedThreads>
                     <includes>
                         <include>**/TestRunner.java</include>
                     </includes>
