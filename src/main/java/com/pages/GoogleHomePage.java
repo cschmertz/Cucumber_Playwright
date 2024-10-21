@@ -2,6 +2,7 @@ package com.pages;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Locator;
+import com.microsoft.playwright.options.AriaRole;
 import com.microsoft.playwright.options.WaitForSelectorState;
 
 public class GoogleHomePage {
@@ -21,8 +22,8 @@ public class GoogleHomePage {
     private void initializeLocators() {
         logoLocator = page.locator("img[alt='Google']");
         searchBoxLocator = page.locator("textarea[name='q']");
-        searchButtonLocator = page.locator("input[name='btnK']");
-        imFeelingLuckyButtonLocator = page.locator("input[name='btnI']");
+        searchButtonLocator = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("Google Search")).first();
+        imFeelingLuckyButtonLocator = page.getByRole(AriaRole.BUTTON, new Page.GetByRoleOptions().setName("I'm Feeling Lucky")).first();
         searchResultsLocator = page.locator("#search");
     }
 
@@ -40,6 +41,7 @@ public class GoogleHomePage {
     }
 
     public boolean areSearchResultsVisible() {
+        searchResultsLocator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
         return searchResultsLocator.isVisible();
     }
 
@@ -48,6 +50,7 @@ public class GoogleHomePage {
     }
 
     public boolean isSearchBoxVisible() {
+        searchButtonLocator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
         return searchBoxLocator.isVisible();
     }
 
@@ -56,6 +59,7 @@ public class GoogleHomePage {
     }
 
     public boolean isImFeelingLuckyButtonVisible() {
+        imFeelingLuckyButtonLocator.waitFor(new Locator.WaitForOptions().setState(WaitForSelectorState.VISIBLE).setTimeout(5000));
         return imFeelingLuckyButtonLocator.first().isVisible();
     }
 }

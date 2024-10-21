@@ -1,7 +1,10 @@
 package com.stepDefinitions;
 
 import com.context.TestContext;
+import com.microsoft.playwright.options.LoadState;
 import com.pages.GoogleHomePage;
+import com.utils.playwright.LocatorUtil;
+import com.utils.playwright.NavigationUtil;
 import com.utils.readers.ConfigReader;
 import io.cucumber.java.en.*;
 import com.microsoft.playwright.*;
@@ -11,6 +14,7 @@ public class GoogleSearchSteps {
     private Page page;
     private GoogleHomePage googleHomePage;
     private ConfigReader configReader;
+    private NavigationUtil navigationUtil;
 
     public GoogleSearchSteps(TestContext testContext) {
         this.page = testContext.getDriverManager().getPage();
@@ -29,13 +33,13 @@ public class GoogleSearchSteps {
         googleHomePage.enterSearchQuery(searchQuery);
     }
 
-    @When("I click the search button")
+    @And("I click the search button")
     public void iClickSearchButton() {
         googleHomePage.clickSearchButton();
     }
 
     @Then("I should see search results")
-    public void iShouldSeeSearchResults() {
+    public void iShouldSeeSearchResults(){
         Assertions.assertTrue(page.url().contains("search?q="), "URL does not contain search query");
         Assertions.assertTrue(googleHomePage.areSearchResultsVisible(), "Search results are not visible");
     }
